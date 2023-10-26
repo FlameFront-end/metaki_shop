@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import axios from 'axios'
 
 const EmailForm = () => {
+  const URL_BACK = process.env.REACT_APP_API_URL
   const [message, setMessage] = useState('')
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/mail', { message })
+      const response = await axios.post(`${URL_BACK}/mail`, { message })
 
       if (response.status === 200) {
         console.log('Письмо отправлено успешно')
