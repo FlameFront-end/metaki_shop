@@ -1,32 +1,58 @@
 import React, { useState } from 'react'
-import Card from './components/Card/Card'
+
 import Cart from '././components/Cart/Cart'
+import Modal from './components/Modal/Modal'
+import Nav from './components/Nav/Nav'
+import Products from './components/Products/Products'
 
 const App = () => {
-  const [cart, setCart] = useState([])
+	const [cart, setCart] = useState([])
+	const [active, setActive] = useState(false)
 
-  const addToCart = (item) => {
-    setCart([...cart, item])
-  }
+	const addToCart = item => {
+		setCart([...cart, { ...item, quantity: 1 }])
+	}
 
-  const products = [
-    { name: 'Товар 1', price: 10 },
-    { name: 'Товар 2', price: 15 },
-    { name: 'Товар 3', price: 20 },
-  ]
+	const updateQuantity = (index, newQuantity) => {
+		const updatedCart = [...cart]
+		if (newQuantity <= 0) {
+			updatedCart.splice(index, 1)
+		} else {
+			updatedCart[index].quantity = newQuantity
+		}
+		setCart(updatedCart)
+	}
 
-  return (
-    <div>
-      <h1>Магазин товаров</h1>
-      <div>{cart.length}</div>
-      <div className="products">
-        {products.map((product, index) => (
-          <Card key={index} name={product.name} price={product.price} onAddToCart={() => addToCart(product)} />
-        ))}
-      </div>
-      <Cart cartItems={cart} />
-    </div>
-  )
+	const removeItem = index => {
+		const updatedCart = [...cart]
+		updatedCart.splice(index, 1)
+		setCart(updatedCart)
+	}
+
+	const openCart = () => {
+		setActive(prevState => !prevState)
+	}
+
+	return (
+		<div>
+			<Nav quantity={cart.length} openCart={openCart} />
+			<div className='container'>
+				<Products addToCart={addToCart} cart={cart} setCart={setCart} />
+			</div>
+			<Modal
+				active={active}
+				closeModal={() => {
+					setActive(false)
+				}}
+			>
+				<Cart
+					cartItems={cart}
+					updateQuantity={updateQuantity}
+					removeItem={removeItem}
+				/>
+			</Modal>
+		</div>
+	)
 }
 
 export default App

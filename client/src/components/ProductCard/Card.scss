@@ -1,0 +1,70 @@
+.card {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  margin-top: 40px;
+
+  @media (max-width: 760px) {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .img {
+    width: 50%;
+    padding-bottom: 500px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+
+    @media (max-width: 760px) {
+      width: 100%;
+    }
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: start;
+    width: 50%;
+
+    @media (max-width: 760px) {
+      width: 100%;
+    }
+
+    .title {
+      font-size: 28px;
+    }
+
+    .subtitle {
+      color: #777;
+      font-size: 22px;
+    }
+
+    .descr {
+      color: #000;
+      font-weight: 300;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    .price {
+      font-size: 22px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 120px;
+      height: 45px;
+      color: #fff;
+      background-color: #ff623b;
+      border-radius: 7px;
+
+      @media (max-width: 760px) {
+        margin: 0 auto;
+      }
+    }
+  }
+}
