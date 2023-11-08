@@ -58,48 +58,50 @@ const EmailForm = () => {
 					Произошла ошибка! Попробуйте ещё раз.
 				</Alert>
 			</Collapse>
-			<Stack direction='column' spacing={2} sx={{ marginTop: '15px' }}>
-				<TextField
-					id='name'
-					label='Ваше имя'
-					variant='filled'
-					onChange={e => setName(e.target.value)}
-					value={name}
-					type='text'
-					required
-				/>
-				<TextField
-					id='email'
-					label='Ваш Email'
-					variant='filled'
-					onChange={e => setEmail(e.target.value)}
-					value={email}
-					type='email'
-					required
-				/>
-				<TextField
-					id='tel'
-					label='Ваш телефон'
-					variant='filled'
-					type='tel'
-					onChange={e => setTel(e.target.value)}
-					value={tel}
-					required
-				/>
+			<form>
+				<Stack direction='column' spacing={2} sx={{ marginTop: '15px' }}>
+					<TextField
+						id='name'
+						label='Ваше имя'
+						variant='filled'
+						onChange={e => setName(e.target.value)}
+						value={name}
+						type='text'
+						required
+					/>
+					<TextField
+						id='email'
+						label='Ваш Email'
+						variant='filled'
+						onChange={e => setEmail(e.target.value)}
+						value={email}
+						type='email'
+						required
+					/>
+					<TextField
+						id='tel'
+						label='Ваш телефон'
+						variant='filled'
+						type='tel'
+						onChange={e => setTel(e.target.value)}
+						value={tel}
+						required
+					/>
 
-				<TextField
-					id='lot'
-					label='Номер лота'
-					variant='filled'
-					onChange={e => setLot(e.target.value)}
-					value={lot}
-					type='text'
-					required
-				/>
-				<Button onClick={handleSubmit} variant='outlined'>
-					Отправить
-				</Button>
-			</Stack>
+					<TextField
+						id='lot'
+						label='Номер лота'
+						variant='filled'
+						onChange={e => setLot(e.target.value)}
+						value={lot}
+						type='text'
+						required
+					/>
+					<Button onClick={handleSubmit} variant='outlined' type='submit'>
+						Отправить
+					</Button>
+				</Stack>
+			</form>
 		</>
 	)
 }
