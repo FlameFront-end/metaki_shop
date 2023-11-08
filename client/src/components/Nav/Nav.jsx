@@ -1,9 +1,9 @@
 import { ShoppingCartOutlined } from '@mui/icons-material'
-import { Badge, Button } from '@mui/material'
+import { Badge, Button, Link } from '@mui/material'
 
 import './Nav.scss'
 
-const Nav = ({ openCart }) => {
+const Nav = ({ openCart, quantity }) => {
 	const navLink = [
 		{ text: 'О нас', link: '' },
 		{ text: 'Стоимость', link: '' },
@@ -17,18 +17,20 @@ const Nav = ({ openCart }) => {
 	return (
 		<nav className='nav'>
 			{navLink.map((item, id) => (
-				<a className='link' href={item.link} key={id}>
+				<Link className='link' color='#FFF' href={item.link} key={id}>
 					{item.text}
-				</a>
+				</Link>
 			))}
-			<Button
-				variant='outlined'
-				style={{ color: 'white' }}
-				startIcon={<ShoppingCartOutlined />}
-				onClick={openCart}
-			>
-				<Badge color='primary'>Корзина</Badge>
-			</Button>
+			<Badge badgeContent={quantity} color='primary'>
+				<Button
+					variant='outlined'
+					style={{ color: 'white' }}
+					startIcon={<ShoppingCartOutlined />}
+					onClick={openCart}
+				>
+					<Badge color='primary'>Корзина</Badge>
+				</Button>
+			</Badge>
 		</nav>
 	)
 }
