@@ -9,32 +9,6 @@ const EmailForm = ({ cartItems }) => {
 	const [tel, setTel] = useState('')
 	const [lot, setLot] = useState('')
 
-	// function extractNumberFromString(str) {
-	// 	const numberString = str.replace(/[^\d.-]/g, '')
-	// 	return parseFloat(numberString)
-	// }
-
-	// const getCartItems = () => {
-	// 	if (cartItems) {
-	// 		const items = Object.values(cartItems)
-	// 				.map(
-	// 						item =>
-	// 								`Name: ${item.title}, Price: ${
-	// 										extractNumberFromString(item.price) * item.quantity
-	// 								}`
-	// 				)
-	// 				.join('\n')
-	//
-	// 		return items
-	// 	} else {
-	// 		return ''
-	// 	}
-	// }
-
-	// useEffect(() => {
-	// 	console.log(cartItems)
-	// }, [cartItems])
-
 	const handleSubmit = async () => {
 		try {
 			const message = `Name: ${name}\nEmail: ${email}\nTel: ${tel}\nLot: ${lot}\n`

@@ -2,38 +2,48 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import { Divider, List, Stack } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { cartSlice } from '../../redux/cartSlice'
+import { extractNumberFromString } from '../../utils/extractNumberFromString'
 import EmailForm from '../EmailForm/EmailForm'
 
-const Cart = ({
-	cartItems,
-	updateQuantity,
-	removeItem,
-	onTotalQuantityChange
-}) => {
-	function extractNumberFromString(str) {
-		const numberString = str.replace(/[^\d.-]/g, '')
-		return parseFloat(numberString)
+const Cart = () => {
+	const dispatch = useDispatch()
+	const { cartItems } = useSelector(state => state.cartReducer)
+	const { removeItem, incQuantity, decQuantity } = cartSlice.actions
+
+	const calculateItemCost = item => {
+		return extractNumberFromString(item.price) * item.quantity
 	}
 
-	const [totalQuantity, setTotalQuantity] = useState(0)
+	const calculateTotalCost = () => {
+		return cartItems.reduce((total, item) => total + calculateItemCost(item), 0)
+	}
 
-	const totalCost = cartItems.reduce(
-		(total, item) =>
-			total + extractNumberFromString(item.price) * item.quantity,
-		0
-	)
+	const calculateTotalQuantity = () => {
+		return cartItems.reduce((total, item) => total + item.quantity, 0)
+	}
 
-	useEffect(() => {
-		setTotalQuantity(
-			cartItems.reduce((total, item) => total + item.quantity, 0)
+	const incrementQuantity = index => {
+		dispatch(incQuantity(index))
+	}
+
+	const decrementQuantity = index => {
+		dispatch(decQuantity(index))
+	}
+
+	const removeItemFromCart = index => {
+		dispatch(removeItem(index))
+	}
+
+	const totalCost = calculateTotalCost()
+	const totalQuantity = calculateTotalQuantity()
+
+	if (!cartItems.length) {
+		return (
+			<div style={{ textAlign: 'center', color: 'red' }}>Корзина пуста</div>
 		)
-		onTotalQuantityChange(totalQuantity)
-	}, [cartItems, onTotalQuantityChange, totalQuantity])
-
-	if (totalQuantity === 0) {
-		return <h2 style={{ textAlign: 'center' }}>Корзина пуста</h2>
 	}
 
 	return (
@@ -58,16 +68,16 @@ const Cart = ({
 							spacing={1}
 							alignItems='center'
 						>
-							<button onClick={() => updateQuantity(index, item.quantity - 1)}>
+							<button onClick={() => decrementQuantity(index)}>
 								<RemoveCircleOutlineIcon />
 							</button>
 							<div>{item.quantity}</div>
-							<button onClick={() => updateQuantity(index, item.quantity + 1)}>
+							<button onClick={() => incrementQuantity(index)}>
 								<AddCircleOutlineIcon />
 							</button>
 						</Stack>
-						<div>{extractNumberFromString(item.price) * item.quantity}</div>
-						<button onClick={() => removeItem(index)}>
+						<div>{calculateItemCost(item)}</div>
+						<button onClick={() => removeItemFromCart(index)}>
 							<HighlightOffIcon />
 						</button>
 					</Stack>

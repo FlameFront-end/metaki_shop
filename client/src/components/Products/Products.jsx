@@ -1,11 +1,16 @@
 import { Alert, Collapse } from '@mui/material'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import { products } from '../../data'
+import { cartSlice } from '../../redux/cartSlice'
 import Card from '../ProductCard/Card'
 
-const Products = ({ addToCart, cart, setCart }) => {
-	const [open, setOpen] = useState(false)
+const Products = () => {
+	const [openAlert, setOpenAlert] = useState(false)
+
+	const { addToCart } = cartSlice.actions
+	const dispatch = useDispatch()
 
 	return (
 		<>
@@ -21,29 +26,16 @@ const Products = ({ addToCart, cart, setCart }) => {
 						optionsTitle={product.optionsTitle}
 						options={product.options}
 						onAddToCart={() => {
-							const existingItem = cart.find(
-								item => item.title === product.title
-							)
-							if (existingItem) {
-								const updatedCart = cart.map(item => {
-									if (item.title === product.title) {
-										return { ...item, quantity: item.quantity + 1 }
-									}
-									return item
-								})
-								setCart(updatedCart)
-							} else {
-								addToCart(product)
-							}
-							setOpen(true)
+							dispatch(addToCart(product, index))
+							setOpenAlert(true)
 							setTimeout(() => {
-								setOpen(false)
+								setOpenAlert(false)
 							}, 3000)
 						}}
 					/>
 				))}
 			</div>
-			<Collapse in={open} className='alert'>
+			<Collapse in={openAlert} className='alert'>
 				<Alert variant='outlined' severity='success'>
 					Товар добавлен в корзину!
 				</Alert>
