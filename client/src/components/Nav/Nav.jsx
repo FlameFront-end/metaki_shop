@@ -1,9 +1,22 @@
 import { ShoppingCartOutlined } from '@mui/icons-material'
 import { Badge, Button, Link } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { cartSlice } from '../../redux/cartSlice'
 
 import './Nav.scss'
 
-const Nav = ({ openCart, quantity }) => {
+const Nav = () => {
+	const dispatch = useDispatch()
+	const { toggleCart } = cartSlice.actions
+	const { cartItems } = useSelector(state => state.cartReducer)
+
+	const calculateTotalQuantity = () => {
+		return cartItems.reduce((total, item) => total + item.quantity, 0)
+	}
+
+	const totalQuantity = calculateTotalQuantity()
+
 	const navLink = [
 		{ text: 'О нас', link: '' },
 		{ text: 'Стоимость', link: '' },
@@ -21,12 +34,12 @@ const Nav = ({ openCart, quantity }) => {
 					{item.text}
 				</Link>
 			))}
-			<Badge badgeContent={quantity} color='primary'>
+			<Badge badgeContent={totalQuantity} color='primary'>
 				<Button
 					variant='outlined'
 					style={{ color: 'white' }}
 					startIcon={<ShoppingCartOutlined />}
-					onClick={openCart}
+					onClick={() => dispatch(toggleCart(true))}
 				>
 					<Badge color='primary'>Корзина</Badge>
 				</Button>
