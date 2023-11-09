@@ -4,7 +4,7 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import { Divider, List, Stack } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { cartSlice } from '../../redux/cartSlice'
+import { cartSlice } from '../../redux/reducers/cartSlice'
 import { extractNumberFromString } from '../../utils/extractNumberFromString'
 import EmailForm from '../EmailForm/EmailForm'
 

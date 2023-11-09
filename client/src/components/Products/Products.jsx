@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { products } from '../../data'
-import { cartSlice } from '../../redux/cartSlice'
+import { cartSlice } from '../../redux/reducers/cartSlice'
 import Card from '../ProductCard/Card'
 
 const Products = () => {

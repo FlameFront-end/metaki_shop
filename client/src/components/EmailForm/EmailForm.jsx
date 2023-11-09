@@ -1,7 +1,10 @@
 import { Alert, Button, Collapse, Stack, TextField } from '@mui/material'
 import axios from 'axios'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { alertSlice } from '../../redux/reducers/alertSlice'
+import { cartSlice } from '../../redux/reducers/cartSlice'
 
 const EmailForm = () => {
 	const URL_BACK = process.env.REACT_APP_API_URL
@@ -10,16 +13,20 @@ const EmailForm = () => {
 	const [tel, setTel] = useState('')
 	const [lot, setLot] = useState('')
 
-	const [openAlertSuccess, setOpenAlertSuccess] = useState(false)
-	const [openAlertRejected, setOpenAlertRejected] = useState(false)
+	const dispatch = useDispatch()
 
 	const { cartItems } = useSelector(state => state.cartReducer)
+	const { toggleAlertRejected, toggleAlertSuccess } = alertSlice.actions
+
+	const { toggleCart } = cartSlice.actions
 
 	const cartItemsFormatted = cartItems.map(item => {
 		return `${item.title} (Кол-во: ${item.quantity}) - Стоимость: ${item.price}`
 	})
 
-	const handleSubmit = async () => {
+	const handleSubmit = async e => {
+		e.preventDefault()
+
 		try {
 			const cartItemsMessage = cartItemsFormatted.join('\n')
 			const message = `Name: ${name}\nEmail: ${email}\nTel: ${tel}\nLot: ${lot}\n\nCart Items:\n${cartItemsMessage}`
@@ -30,16 +37,18 @@ const EmailForm = () => {
 
 			if (response.status === 200) {
 				console.log('Письмо отправлено успешно')
-				setOpenAlertSuccess(true)
+				dispatch(toggleAlertSuccess(true))
 				setTimeout(() => {
-					setOpenAlertSuccess(false)
+					dispatch(toggleAlertSuccess(false))
 				}, 3000)
+				dispatch(toggleCart(false))
 			} else {
 				console.error('Ошибка отправки письма')
-				setOpenAlertRejected(true)
+				dispatch(toggleAlertRejected(true))
 				setTimeout(() => {
-					setOpenAlertRejected(false)
+					dispatch(toggleAlertRejected(false))
 				}, 3000)
+				dispatch(toggleCart(false))
 			}
 		} catch (error) {
 			console.error('Ошибка:', error)
@@ -48,17 +57,7 @@ const EmailForm = () => {
 
 	return (
 		<>
-			<Collapse in={openAlertSuccess} className='alert'>
-				<Alert variant='outlined' severity='success'>
-					Письмо успешно отправлено!
-				</Alert>
-			</Collapse>
-			<Collapse in={openAlertRejected} className='alert'>
-				<Alert variant='outlined' severity='error'>
-					Произошла ошибка! Попробуйте ещё раз.
-				</Alert>
-			</Collapse>
-			<form>
+			<form onSubmit={handleSubmit}>
 				<Stack direction='column' spacing={2} sx={{ marginTop: '15px' }}>
 					<TextField
 						id='name'
@@ -95,9 +94,8 @@ const EmailForm = () => {
 						onChange={e => setLot(e.target.value)}
 						value={lot}
 						type='text'
-						required
 					/>
-					<Button onClick={handleSubmit} variant='outlined' type='submit'>
+					<Button variant='outlined' type='submit'>
 						Отправить
 					</Button>
 				</Stack>

@@ -2,7 +2,7 @@ import { ShoppingCartOutlined } from '@mui/icons-material'
 import { Badge, Button, Link } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { cartSlice } from '../../redux/cartSlice'
+import { cartSlice } from '../../redux/reducers/cartSlice'
 
 import './Nav.scss'
 

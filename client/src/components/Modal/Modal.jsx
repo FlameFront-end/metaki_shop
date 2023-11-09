@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 
-import { cartSlice } from '../../redux/cartSlice'
+import { cartSlice } from '../../redux/reducers/cartSlice'
 
 import './Modal.scss'
 
